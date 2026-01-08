@@ -10,6 +10,28 @@ This repository contains the firmware for an ESP32-based Industrial IoT Gateway.
 
 The firmware includes an embedded web server hosting a Single Page Application (SPA) for configuration, eliminating the need for hardcoded credentials. Configuration data is persisted in the ESP32 Non-Volatile Storage (NVS).
 
+## Interface Gallery
+
+The embedded web interface is responsive and supports high-contrast themes for industrial environments.
+
+### Light Theme
+| 1. Dashboard | 2. General Config | 3. Sensors Map |
+| :---: | :---: | :---: |
+| <img src="assets/light-1.png" width="100%"> | <img src="assets/light-2.png" width="100%"> | <img src="assets/light-3.png" width="100%"> |
+
+| 4. Validation | 5. Success | |
+| :---: | :---: | :---: |
+| <img src="assets/light-4.png" width="100%"> | <img src="assets/light-5.png" width="100%"> | *Full configuration flow* |
+
+### Dark Theme
+| 1. Dashboard | 2. General Config | 3. Sensors Map |
+| :---: | :---: | :---: |
+| <img src="assets/dark-1.png" width="100%"> | <img src="assets/dark-2.png" width="100%"> | <img src="assets/dark-3.png" width="100%"> |
+
+| 4. Validation | 5. Success | |
+| :---: | :---: | :---: |
+| <img src="assets/dark-4.png" width="100%"> | <img src="assets/dark-5.png" width="100%"> | *High contrast mode* |
+
 ## Features
 
 - **Network Management**: Automatic failover between Station Mode (STA) and Access Point (AP) for initial provisioning.
@@ -18,20 +40,6 @@ The firmware includes an embedded web server hosting a Single Page Application (
 - **Embedded Web Interface**: Responsive configuration dashboard stored in LittleFS (HTML5/CSS3/JS).
 - **Hardware Abstraction**: Decoupled I/O logic via `IOController` class.
 - **System Safety**: Physical factory reset via long-press on the BOOT button.
-
-## Interface
-
-The web interface supports both light and dark themes and adapts to mobile devices.
-
-### Light Theme
-| Dashboard | Configuration | I/O Mapping |
-| :---: | :---: | :---: |
-| <img src="assets/light-1.png" width="100%"> | <img src="assets/light-2.png" width="100%"> | <img src="assets/light-3.png" width="100%"> |
-
-### Dark Theme
-| Dashboard | Configuration | I/O Mapping |
-| :---: | :---: | :---: |
-| <img src="assets/dark-1.png" width="100%"> | <img src="assets/dark-2.png" width="100%"> | <img src="assets/dark-3.png" width="100%"> |
 
 ## Hardware Requirements
 
