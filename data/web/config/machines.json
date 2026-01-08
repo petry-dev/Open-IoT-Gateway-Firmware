@@ -1,0 +1,62 @@
+{
+  "machines": [
+    {
+      "id": "generic",
+      "name": {
+        "en": "Generic Machine",
+        "pt": "Máquina Genérica",
+        "es": "Máquina Genérica"
+      }
+    },
+    {
+      "id": "plasma",
+      "name": {
+        "en": "CNC Plasma",
+        "pt": "Plasma CNC",
+        "es": "Plasma CNC"
+      }
+    },
+    {
+      "id": "press",
+      "name": {
+        "en": "Hydraulic Press",
+        "pt": "Prensa Hidráulica",
+        "es": "Prensa Hidráulica"
+      }
+    }
+  ],
+  "sensors": [
+    {
+      "id": "di1",
+      "name": {
+        "en": "Cycle Start",
+        "pt": "Início de Ciclo",
+        "es": "Inicio de Ciclo"
+      }
+    },
+    {
+      "id": "di2",
+      "name": {
+        "en": "Cycle Stop",
+        "pt": "Fim de Ciclo",
+        "es": "Fin de Ciclo"
+      }
+    },
+    {
+      "id": "di3",
+      "name": {
+        "en": "Error Signal",
+        "pt": "Sinal de Erro",
+        "es": "Señal de Error"
+      }
+    },
+    {
+      "id": "an1",
+      "name": {
+        "en": "Temperature",
+        "pt": "Temperatura",
+        "es": "Temperatura"
+      }
+    }
+  ]
+}

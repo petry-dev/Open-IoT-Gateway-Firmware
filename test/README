@@ -1,0 +1,33 @@
+# Open IoT Gateway 📡
+
+Industrial firmware developed for ESP32, acting as a universal factory floor gateway. The project implements a robust Wi-Fi provisioning system (Captive Portal), sensor reading, and telemetry transmission for Industry 4.0 applications.
+
+## 🚀 Key Features
+
+* **Web Provisioning:** Embedded interface (stored in LittleFS) for Wi-Fi and MQTT configuration without recompiling code.
+* **Responsive Interface:** Modern, responsive, and *offline-first* configuration dashboard, using Emojis for lightweight compatibility.
+* **Visual Feedback:** Connection validation system with real-time feedback and automatic reboot.
+* **Protocols:**
+    * **MQTT:** Optimized JSON transmission (`IO Check`, `Sensors`, `RSSI`).
+    * **Modbus/MTConnect:** Architecture ready for industrial protocol expansion.
+
+## 🛠 Tech Stack
+
+* **Language:** C++ (PlatformIO / Arduino Framework)
+* **Hardware:** ESP32 (Compatible with ESP8266/PIC with adaptations)
+* **Frontend:** HTML5, CSS3 (CSS Variables), Vanilla JS (Fetch API)
+* **Storage:** LittleFS (Optimized SPIFFS File System)
+
+## 📸 Screenshots
+
+*(Upload your screenshots here)*
+
+## 📦 How to Install
+
+1.  Clone this repository.
+2.  Open in VS Code with **PlatformIO** extension.
+3.  Upload **Filesystem Image** (to flash HTML/CSS).
+4.  Upload **Firmware**.
+
+---
+*Developed by William Petry*

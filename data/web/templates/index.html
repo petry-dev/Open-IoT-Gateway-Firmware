@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Gateway Config</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+
+<body class="loading">
+    <div class="container">
+        <div class="top-bar">
+            <div class="lang-switch">
+                <button type="button" onclick="setLanguage('pt')" class="lang-btn" title="Português">
+                    <svg viewBox="0 0 72 50"><rect width="72" height="50" fill="#009c3b" /><polygon points="36,8 65,25 36,42 7,25" fill="#ffdf00" /><circle cx="36" cy="25" r="10" fill="#002776" /></svg>
+                </button>
+                <button type="button" onclick="setLanguage('en')" class="lang-btn" title="English">
+                    <svg viewBox="0 0 74 39"><rect width="74" height="39" fill="#b22234" /><rect y="3.9" width="74" height="3.9" fill="#fff" /><rect y="11.7" width="74" height="3.9" fill="#fff" /><rect y="19.5" width="74" height="3.9" fill="#fff" /><rect y="27.3" width="74" height="3.9" fill="#fff" /><rect y="35.1" width="74" height="3.9" fill="#fff" /><rect width="29.6" height="21" fill="#3c3b6e" /></svg>
+                </button>
+                <button type="button" onclick="setLanguage('es')" class="lang-btn" title="Español">
+                    <svg viewBox="0 0 750 500"><rect width="750" height="500" fill="#AA151B" /><rect y="125" width="750" height="250" fill="#F1BF00" /></svg>
+                </button>
+            </div>
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                <i id="theme-icon" class="las la-moon"></i>
+            </button>
+        </div>
+
+        <div class="logo-area">
+            <i class="las la-broadcast-tower"></i>
+            <h2 data-i18n="app_title">Open IoT Gateway</h2>
+            <p style="margin: 5px 0 0 0; opacity: 0.6; font-size: 0.9rem;" data-i18n="app_subtitle">Industrial Connectivity</p>
+        </div>
+
+        <form action="/save" method="POST" id="mainForm" onsubmit="handleFormSubmit(event)">
+
+            <div class="step-card" id="step1">
+                <div class="step-header" onclick="goToStep(1)">
+                    <h3 data-i18n="step1_title">General Settings</h3>
+                    <span class="step-icon"><i class="las la-cog"></i></span>
+                </div>
+                <div class="step-content">
+                    <label data-i18n="lbl_machine_type">Machine Type</label>
+                    <select id="machineType" name="machineType" onchange="checkMachineType()">
+                        <option value="" disabled selected data-i18n="opt_loading">Loading...</option>
+                    </select>
+
+                    <div id="plasma-specific" style="display: none; margin-bottom: 20px;">
+                        <label style="color:var(--primary);" data-i18n="lbl_cnc_ip">CNC IP Address</label>
+                        <input type="text" id="cncIp" name="cncIp" placeholder="e.g. 192.168.0.100" oninput="maskIp(this)">
+                        <small style="opacity: 0.7;" data-i18n="hint_cnc">Required for MTConnect protocol</small>
+                    </div>
+
+                    <h4 class="sub-title" style="margin-top: 20px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;" data-i18n="sec_wifi">Wi-Fi Connection</h4>
+
+                    <label data-i18n="lbl_network">Select Network</label>
+                    <div class="input-group">
+                        <select id="network-select" name="ssid" required>{{NETWORK_LIST}}</select>
+                        <button type="button" onclick="atualizarRedes()" class="icon-btn">
+                            <i class="las la-sync"></i>
+                        </button>
+                    </div>
+
+                    <label data-i18n="lbl_password">Password</label>
+                    <div class="password-wrapper" style="position: relative;">
+                        <input type="password" id="password" name="password" value="{{PASS}}">
+                        <span onclick="togglePassword('password')" style="position: absolute; right: 15px; top: 12px; cursor: pointer; opacity: 0.6;">
+                            <i class="las la-eye"></i>
+                        </span>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="show-advanced" onclick="toggleAdvanced()">
+                            <div class="checkbox-text">
+                                <strong data-i18n="adv_title">Advanced Configuration</strong>
+                                <small data-i18n="adv_desc">Broker MQTT, User Auth & Custom Settings</small>
+                            </div>
+                        </label>
+
+                        <div id="advanced-settings" style="display: none; margin-top: 15px; padding-left: 5px; border-left: 2px solid var(--border-color);">
+                            <label data-i18n="lbl_broker">MQTT Broker IP</label>
+                            <input type="text" name="mqttServer" value="{{MQTT_SERVER}}">
+                            <label data-i18n="lbl_user">MQTT User</label>
+                            <input type="text" name="mqttUser" value="{{MQTT_USER}}">
+                            <label data-i18n="lbl_mqtt_pass">MQTT Password</label>
+                            <div class="password-wrapper" style="position: relative;">
+                                <input type="password" id="mqttPass" name="mqttPassword" value="{{MQTT_PASS}}">
+                                <span onclick="togglePassword('mqttPass')" style="position: absolute; right: 15px; top: 12px; cursor: pointer; opacity: 0.6;">
+                                    <i class="las la-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-next" onclick="goToStep(2)">
+                            <span data-i18n="btn_next">Next Step</span> <i class="las la-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card collapsed" id="step2">
+                <div class="step-header" onclick="goToStep(2)">
+                    <h3 data-i18n="step2_title">Sensors Map</h3>
+                    <span class="step-icon"><i class="las la-microchip"></i></span>
+                </div>
+                <div class="step-content">
+                    <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 15px;" data-i18n="step2_desc">Select the physical inputs connected to the machine:</p>
+                    <div id="sensors-container">Loading...</div>
+                    <input type="hidden" id="activeSensors" name="activeSensors">
+                    <div class="btn-group">
+                        <button type="button" class="btn-prev" onclick="goToStep(1)" data-i18n="btn_back">Back</button>
+                        <button type="button" class="btn-next" onclick="goToStep(3)" data-i18n="btn_next">Next Step</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card collapsed" id="step3">
+                <div class="step-header" onclick="goToStep(3)">
+                    <h3 data-i18n="step3_title">Validation & Save</h3>
+                    <span class="step-icon"><i class="las la-clipboard-check"></i></span>
+                </div>
+                <div class="step-content">
+                    <div class="summary-list" style="background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color);">
+                        <h4 style="margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--primary);">Resumo / Summary</h4>
+                        <div class="summary-item"><span style="opacity:0.7">Machine:</span><strong id="sum-machine" style="float:right">-</strong></div>
+                        <div class="summary-item"><span style="opacity:0.7">Wi-Fi SSID:</span><strong id="sum-ssid" style="float:right">-</strong></div>
+                        <div class="summary-item"><span style="opacity:0.7">MQTT Broker:</span><strong id="sum-broker" style="float:right">-</strong></div>
+                        <div class="summary-item"><span style="opacity:0.7">MQTT User:</span><strong id="sum-user" style="float:right">-</strong></div>
+                        <div style="margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 10px;">
+                            <span style="opacity:0.7; display:block; margin-bottom: 5px;">Active Sensors:</span>
+                            <div id="sum-sensors" style="text-align: right; font-weight: bold; color: var(--success);">-</div>
+                        </div>
+                    </div>
+                    <div class="status-box">
+                        <div class="test-item" id="status-wifi">
+                            <span><i class="las la-wifi"></i> <span data-i18n="st_wifi">Wi-Fi Connection</span></span>
+                            <span class="badge" data-i18n="st_wait">Waiting</span>
+                        </div>
+                        <div class="test-item" id="status-mqtt">
+                            <span><i class="las la-cloud"></i> <span data-i18n="st_mqtt">MQTT Broker</span></span>
+                            <span class="badge" data-i18n="st_wait">Waiting</span>
+                        </div>
+                        <div id="test-msg" style="margin-top:10px; font-size:0.85rem; font-weight: 500;"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn-prev" onclick="goToStep(2)" data-i18n="btn_back">Back</button>
+                        <button type="button" class="btn-test" style="background: var(--text-color); color: var(--bg-color);" onclick="performTests()" data-i18n="btn_test">Test Connection</button>
+                        <button type="submit" id="btn-save" class="btn-save" disabled data-i18n="btn_save">Save Configuration</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div id="success-card" class="step-card" style="display: none; text-align: center; padding: 40px 20px;">
+            <div style="font-size: 4rem; color: var(--success); margin-bottom: 20px;">
+                <i class="las la-check-circle"></i>
+            </div>
+            <h2 data-i18n="success_title">Configuration Saved!</h2>
+            <p data-i18n="success_msg" style="opacity: 0.8; margin-bottom: 20px;">The device is rebooting...</p>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+    
+    <script>
+        window.MACHINES_DATA = {{ MACHINES_JSON }};
+        window.SAVED_SSID = "{{SSID}}";
+        window.SAVED = { type: "{{SAVED_TYPE}}", ip: "{{SAVED_IP}}", sensors: "{{SAVED_SENSORS}}" };
+    </script>
+</body>
+</html>
