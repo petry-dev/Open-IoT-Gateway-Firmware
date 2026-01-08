@@ -1,94 +1,62 @@
-# 🏭 Open IoT Gateway (ESP32 Firmware)
+# Open IoT Gateway Firmware
 
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Platform](https://img.shields.io/badge/Platform-ESP32-blue)
-![Language](https://img.shields.io/badge/Language-C%2B%2B-00599C)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Platform](https://img.shields.io/badge/platform-ESP32-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## 📖 Overview
+## Overview
 
-**Open IoT Gateway** is a robust, generic firmware designed for **Industry 4.0** applications. It transforms an ESP32 microcontroller into a bridge between physical industrial signals (Digital/Analog I/O) and modern IT protocols (MQTT).
+This repository contains the firmware for an ESP32-based Industrial IoT Gateway. The system acts as a bridge between physical industrial signals (Digital/Analog I/O) and IT protocols (MQTT/HTTP), designed for Industry 4.0 applications.
 
-The project features a responsive **Single Page Application (SPA)** hosted directly on the ESP32's filesystem, allowing for user-friendly configuration without hardcoding credentials.
+The firmware includes an embedded web server hosting a Single Page Application (SPA) for configuration, eliminating the need for hardcoded credentials. Configuration data is persisted in the ESP32 Non-Volatile Storage (NVS).
 
----
+## Features
 
-## 📸 Interface Gallery
+- **Network Management**: Automatic failover between Station Mode (STA) and Access Point (AP) for initial provisioning.
+- **MQTT Telemetry**: Real-time publishing of I/O states and sensor data using JSON payloads.
+- **MTConnect Proxy**: HTTP client capability to fetch data from CNC machines and relay to MQTT.
+- **Embedded Web Interface**: Responsive configuration dashboard stored in LittleFS (HTML5/CSS3/JS).
+- **Hardware Abstraction**: Decoupled I/O logic via `IOController` class.
+- **System Safety**: Physical factory reset via long-press on the BOOT button.
 
-The user interface is built to be responsive and supports high-contrast **Dark Mode** for industrial environments.
+## Interface
 
-### ☀️ Light Mode (Day)
+The web interface supports both light and dark themes and adapts to mobile devices.
 
-| 1. Start Screen | 2. General Config | 3. Sensors Map |
+### Light Theme
+| Dashboard | Configuration | I/O Mapping |
 | :---: | :---: | :---: |
 | <img src="assets/light-1.png" width="100%"> | <img src="assets/light-2.png" width="100%"> | <img src="assets/light-3.png" width="100%"> |
 
-| 4. Validation & Test | 5. Success Feedback | |
-| :---: | :---: | :---: |
-| <img src="assets/light-4.png" width="100%"> | <img src="assets/light-5.png" width="100%"> | 👆 **Responsive UI** |
-
-### 🌙 Dark Mode (Night)
-
-| 1. Start Screen | 2. General Config | 3. Sensors Map |
+### Dark Theme
+| Dashboard | Configuration | I/O Mapping |
 | :---: | :---: | :---: |
 | <img src="assets/dark-1.png" width="100%"> | <img src="assets/dark-2.png" width="100%"> | <img src="assets/dark-3.png" width="100%"> |
 
-| 4. Validation & Test | 5. Success Feedback | |
-| :---: | :---: | :---: |
-| <img src="assets/dark-4.png" width="100%"> | <img src="assets/dark-5.png" width="100%"> | 👆 **High Contrast** |
+## Hardware Requirements
 
----
+- **Microcontroller**: ESP32 DevKit V1 (or compatible ESP32-WROOM-32 board).
+- **Peripherals**:
+  - Digital Inputs: Optocoupled inputs (active low/high configurable).
+  - Analog Inputs: 0-10V or 4-20mA conditioning circuits.
+  - Status LED: GPIO 2 (Onboard).
 
-## ✨ Key Features
+## Development Environment
 
-* **Connectivity:**
-    * **Wi-Fi Manager:** Automatic failover between Station Mode (STA) and Access Point (AP).
-    * **MQTT Client:** Real-time publishing of machine states and sensor data.
-    * **MTConnect Proxy:** Fetches data from CNC machines via HTTP and converts it to MQTT.
-* **Web Interface (SPA):**
-    * **Modern UI:** HTML5, CSS3, and Vanilla JS (no heavy frameworks).
-    * **Async WebServer:** Non-blocking request handling.
-    * **Internationalization (i18n):** English, Portuguese, and Spanish.
-    * **Theme System:** Persistent Dark/Light mode.
-* **Architecture:**
-    * **Clean Code:** Hardware abstraction via `IOController`.
-    * **Non-Volatile Storage:** Uses ESP32 Preferences (NVS).
-    * **Safety:** Physical factory reset (Long-press BOOT button).
+The project is structured for **PlatformIO**.
 
-## 🛠️ Tech Stack
+- **IDE**: VS Code
+- **Framework**: Arduino
+- **Platform**: Espressif 32
 
-* **Microcontroller:** ESP32 (DevKit V1)
-* **Framework:** Arduino / PlatformIO
-* **Language:** C++
-* **Filesystem:** LittleFS
-* **Protocols:** MQTT, HTTP, MTConnect
+### Dependencies
+All dependencies are managed via `platformio.ini`:
+- `PubSubClient` (MQTT)
+- `ArduinoJson` (Serialization)
 
-## 🚀 Installation & Setup
+## Installation and Flashing
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/petry-dev/Open-IoT-Gateway-Firmware.git](https://github.com/petry-dev/Open-IoT-Gateway-Firmware.git)
-    ```
-
-2.  **Upload Filesystem (Important):**
-    * In PlatformIO: *Project Tasks* -> *Platform* -> *Upload Filesystem Image*.
-    * *This uploads the HTML/CSS/JS files to the ESP32.*
-
-3.  **Upload Firmware:**
-    * In PlatformIO: *Project Tasks* -> *General* -> *Upload*.
-
-4.  **Configuration:**
-    * Connect to Wi-Fi AP: `IoT-Gateway-XXXX` (Pass: `admin1234`)
-    * Go to: `http://192.168.4.1`
-
-## 📂 Project Structure
-
-```text
-├── assets/                # Documentation images
-├── data/                  # Web App (HTML/CSS/JS)
-├── include/               # Headers
-├── src/                   # C++ Source Code
-│   ├── main.cpp           # Main Loop
-│   ├── ConfigWifi.cpp     # WebServer Logic
-│   └── ...
-└── platformio.ini         # Configuration
+### 1. Clone the repository
+```bash
+git clone [https://github.com/petry-dev/Open-IoT-Gateway-Firmware.git](https://github.com/petry-dev/Open-IoT-Gateway-Firmware.git)
+cd Open-IoT-Gateway-Firmware
